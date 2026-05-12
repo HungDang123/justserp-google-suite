@@ -1,30 +1,35 @@
-app = "justserp-google-suite"
-primary_region = "sin"
+# fly.toml app configuration file generated for justserp-google-suite on 2026-05-12T10:20:14Z
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'justserp-google-suite'
+primary_region = 'sin'
 
 [build]
-  dockerfile = "Dockerfile"
+  dockerfile = 'Dockerfile'
 
 [env]
-  PORT = "8080"
-  STATIC_DIR = "/app/frontend/dist"
-  MANIFEST_PATH = "/app/shared/justserp-google-endpoints.json"
+  MANIFEST_PATH = '/app/shared/justserp-google-endpoints.json'
+  PORT = '8080'
+  STATIC_DIR = '/app/frontend/dist'
 
 [http_service]
   internal_port = 8080
   force_https = true
-  auto_stop_machines = "stop"
+  auto_stop_machines = 'stop'
   auto_start_machines = true
   min_machines_running = 0
-  processes = ["app"]
+  processes = ['app']
 
   [[http_service.checks]]
-    grace_period = "15s"
-    interval = "30s"
-    method = "GET"
-    path = "/healthz"
-    timeout = "5s"
+    interval = '30s'
+    timeout = '5s'
+    grace_period = '15s'
+    method = 'GET'
+    path = '/healthz'
 
 [[vm]]
-  cpu_kind = "shared"
+  cpu_kind = 'shared'
   cpus = 1
   memory_mb = 512
