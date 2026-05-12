@@ -1,0 +1,262 @@
+.shell {
+  width: min(1400px, 100%);
+  margin: 0 auto;
+  padding: 32px 24px 48px;
+  box-sizing: border-box;
+}
+
+.shell--centered {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+}
+
+.hero-card,
+.panel {
+  background: var(--panel-bg);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+}
+
+.hero-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1.8fr) minmax(240px, 1fr);
+  gap: 24px;
+  padding: 28px;
+  margin-bottom: 24px;
+}
+
+.eyebrow {
+  margin: 0 0 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.78rem;
+  color: var(--accent);
+}
+
+.hero-copy {
+  max-width: 70ch;
+}
+
+.hero-stats {
+  display: grid;
+  gap: 12px;
+}
+
+.stat-card {
+  background: var(--accent-bg);
+  border: 1px solid var(--accent-border);
+  border-radius: 16px;
+  padding: 18px;
+}
+
+.stat-card__value {
+  display: block;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text-h);
+}
+
+.stat-card__label {
+  font-size: 0.9rem;
+}
+
+.layout-grid {
+  display: grid;
+  grid-template-columns: minmax(280px, 320px) minmax(0, 1fr);
+  gap: 24px;
+}
+
+.sidebar,
+.content-stack {
+  display: grid;
+  gap: 24px;
+}
+
+.panel {
+  padding: 24px;
+}
+
+.panel__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.panel__header h2 {
+  margin: 0 0 6px;
+}
+
+.link-button,
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  border: 1px solid var(--accent-border);
+  background: var(--accent);
+  color: white;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 11px 16px;
+  cursor: pointer;
+}
+
+.button:disabled {
+  opacity: 0.7;
+  cursor: progress;
+}
+
+.button--ghost {
+  background: transparent;
+  color: var(--text-h);
+  border-color: var(--border);
+}
+
+.meta-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.meta-grid > div {
+  background: var(--surface);
+  border-radius: 14px;
+  padding: 14px;
+}
+
+.meta-grid__label {
+  display: block;
+  font-size: 0.82rem;
+  margin-bottom: 8px;
+}
+
+.field {
+  display: grid;
+  gap: 8px;
+}
+
+.field__label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  color: var(--text-h);
+}
+
+.field__required {
+  font-size: 0.75rem;
+  color: var(--accent);
+  background: var(--accent-bg);
+  border-radius: 999px;
+  padding: 2px 8px;
+}
+
+.field__input,
+select.field__input {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--text-h);
+  padding: 12px 14px;
+  font: inherit;
+  box-sizing: border-box;
+}
+
+.field__hint {
+  font-size: 0.85rem;
+  color: var(--text);
+}
+
+.checkbox-field {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  width: fit-content;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  color: var(--text-h);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.info-banner,
+.error-banner {
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin-bottom: 18px;
+}
+
+.info-banner {
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+
+.error-banner {
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  color: var(--text-h);
+}
+
+.response-viewer {
+  min-height: 420px;
+  margin: 0;
+  padding: 18px;
+  overflow: auto;
+  border-radius: 16px;
+  background: #0f172a;
+  color: #e2e8f0;
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 6px 12px;
+  color: var(--text-h);
+}
+
+.sidebar__summary {
+  display: grid;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+@media (max-width: 1080px) {
+  .hero-card,
+  .layout-grid,
+  .form-grid,
+  .meta-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .panel__header,
+  .actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "name": "justserp-google-suite",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "concurrently -k -n frontend,backend \"npm --prefix frontend run dev -- --host\" \"go run ./backend/cmd/api\"",
+    "build": "npm --prefix frontend run build && go build ./backend/cmd/api",
+    "test": "npm --prefix frontend run test && go test ./backend/...",
+    "lint": "npm --prefix frontend run lint"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
