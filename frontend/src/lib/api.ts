@@ -1,8 +1,11 @@
 import type { FormValues, Manifest, ProxyResult } from '../types'
 
-const API_BASE_URL =
-  (import.meta.env.VITE_API_BASE_URL as string | undefined)?.replace(/\/$/, '') ??
-  'http://localhost:8080'
+const configuredBaseUrl = (import.meta.env.VITE_API_BASE_URL as string | undefined)?.replace(
+  /\/$/,
+  '',
+)
+
+const API_BASE_URL = configuredBaseUrl ?? (import.meta.env.DEV ? 'http://localhost:8080' : '')
 
 export async function fetchManifest(): Promise<Manifest> {
   const response = await fetch(`${API_BASE_URL}/api/endpoints`)

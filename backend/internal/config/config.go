@@ -15,6 +15,7 @@ type Config struct {
 	JustSerpAPIKey  string
 	UpstreamBaseURL string
 	ManifestPath    string
+	StaticDir       string
 	RequestTimeout  time.Duration
 }
 
@@ -42,11 +43,16 @@ func Load() (Config, error) {
 
 	return Config{
 		Port:            getEnv("PORT", "8080"),
-		FrontendOrigin:  getEnv("FRONTEND_ORIGIN", "http://localhost:5173"),
+		FrontendOrigin:  getEnv("FRONTEND_ORIGIN", ""),
 		JustSerpAPIKey:  apiKey,
 		UpstreamBaseURL: getEnv("JUSTSERP_BASE_URL", "https://api.justserpapi.com"),
 		ManifestPath:    manifestPath,
-		RequestTimeout:  time.Duration(timeoutSeconds) * time.Second,
+		StaticDir: resolveOptionalPath(os.Getenv("STATIC_DIR"),
+			"frontend/dist",
+			"../frontend/dist",
+			"/app/frontend/dist",
+		),
+		RequestTimeout: time.Duration(timeoutSeconds) * time.Second,
 	}, nil
 }
 
@@ -75,4 +81,21 @@ func resolveManifestPath(explicit string) (string, error) {
 	}
 
 	return "", fmt.Errorf("could not locate shared manifest file")
+}
+
+func resolveOptionalPath(explicit string, candidates ...string) string {
+	paths := []string{}
+	if explicit != "" {
+		paths = append(paths, explicit)
+	}
+
+	paths = append(paths, candidates...)
+
+	for _, candidate := range paths {
+		if _, err := os.Stat(candidate); err == nil {
+			return candidate
+		}
+	}
+
+	return ""
 }
