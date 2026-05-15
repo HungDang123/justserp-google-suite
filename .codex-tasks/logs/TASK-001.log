@@ -1,0 +1,69 @@
+Không ghi được `.codex-tasks/plans/TASK-001.md` vì phiên hiện tại đang `read-only` và approval bị khóa `never`. Mình đã đọc `.codex-tasks/inbox.md`; TASK-001 đúng là `status: new`, nên không sửa code.
+
+Nội dung plan cần ghi:
+
+```md
+# TASK-001 Plan
+
+## 1. Tóm tắt vấn đề
+
+TASK-001 yêu cầu cải thiện giao diện sử dụng các thư viện React hỗ trợ giao diện. Task đang có `status: new`, vì vậy chỉ lập plan, chưa sửa code.
+
+Mục tiêu khi task được approved là nâng cấp UI frontend hiện tại theo hướng dễ nhìn, dễ thao tác, giữ đúng chức năng explorer/proxy API sẵn có và tránh refactor lớn ngoài phạm vi.
+
+## 2. File/function liên quan
+
+- `frontend/package.json`: kiểm tra dependency UI hiện có.
+- `frontend/src/pages/ExplorerPage.tsx`: layout tổng, state manifest, selected endpoint, form, result, loading/error.
+- `frontend/src/components/EndpointSelector.tsx`: UI danh sách endpoint.
+- `frontend/src/components/EndpointForm.tsx`: UI form params, reset/submit.
+- `frontend/src/components/ResponseViewer.tsx`: UI loading/error/status/payload.
+- `frontend/src/App.css`: style layout, panel, form, response viewer.
+- `frontend/src/index.css`: biến màu, typography/global style.
+- `frontend/src/components/EndpointForm.test.tsx`: test form hiện có.
+
+## 3. Hướng sửa từng bước
+
+1. Kiểm tra UI hiện tại và xác định thư viện React phù hợp; nếu cần thêm dependency UI thì giải thích lý do trước.
+2. Nâng cấp layout `ExplorerPage`, giữ sidebar + content, cải thiện spacing, hierarchy, loading/empty/error state.
+3. Cải thiện `EndpointSelector`: trạng thái selected, focus, hiển thị thông tin endpoint rõ hơn nếu data có sẵn.
+4. Cải thiện `EndpointForm`: label, required badge, hint, input/select/checkbox, actions.
+5. Cải thiện `ResponseViewer`: loading/error/success status, JSON dễ đọc, payload dài không phá layout.
+6. Cập nhật CSS phạm vi nhỏ, giữ style hiện tại nếu còn phù hợp, không refactor toàn bộ.
+7. Cập nhật test chỉ khi markup UI thay đổi làm test hiện có fail.
+
+## 4. Test/lint cần chạy
+
+- `npm --prefix frontend run lint`
+- `npm --prefix frontend run test`
+- `npm --prefix frontend run build`
+- Kiểm tra thủ công bằng `npm --prefix frontend run dev`: load manifest, chọn endpoint, nhập/reset form, submit request, xem loading/error/response, kiểm tra responsive.
+
+## 5. Rủi ro
+
+- Thêm UI library có thể tăng bundle size và thay đổi dependency.
+- UI library có thể không tương thích hoàn toàn với React/Vite version hiện tại.
+- Thay đổi markup có thể làm test hiện có fail.
+- Không có mockup cụ thể nên dễ lệch kỳ vọng style; cần giữ phạm vi nhỏ.
+- Endpoint list hoặc response payload dài có thể gây overflow layout.
+```
+Không thể xử lý code trong lượt này vì workspace đang ở `read-only` và policy là `approval: never`. Lệnh sửa file bằng `apply_patch` bị chặn: `writing is blocked by read-only sandbox`.
+
+1. File đã sửa  
+Không có file nào được sửa.
+
+2. Nội dung đã sửa  
+Không có thay đổi được ghi vào filesystem. Mình đã đọc đúng:
+- `AGENTS.md`
+- `.codex-tasks/inbox.md`
+- `.codex-tasks/plans/TASK-001.md`
+- các file frontend liên quan trong plan
+
+3. Test/lint đã chạy  
+Chưa chạy test/lint vì chưa có code change. Build/test cũng có thể bị ảnh hưởng bởi sandbox read-only nếu cần ghi output.
+
+4. Rủi ro còn lại  
+`TASK-001` chưa được implement. Cần chạy lại trong môi trường cho phép ghi file để cập nhật UI theo plan, sau đó chạy:
+- `npm --prefix frontend run lint`
+- `npm --prefix frontend run test`
+- `npm --prefix frontend run build`

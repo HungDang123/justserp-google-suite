@@ -1,3 +1,18 @@
+import ApiIcon from '@mui/icons-material/Api'
+import CodeIcon from '@mui/icons-material/Code'
+import DatasetIcon from '@mui/icons-material/Dataset'
+import KeyIcon from '@mui/icons-material/Key'
+import SearchIcon from '@mui/icons-material/Search'
+import {
+  Alert,
+  Box,
+  Chip,
+  CircularProgress,
+  Container,
+  Paper,
+  Stack,
+  Typography,
+} from '@mui/material'
 import { useEffect, useMemo, useState } from 'react'
 
 import { EndpointForm } from '../components/EndpointForm'
@@ -105,39 +120,95 @@ export function ExplorerPage() {
   }
 
   if (isLoadingManifest) {
-    return <main className="shell shell--centered">Loading endpoint manifest...</main>
+    return (
+      <Box className="loading-shell">
+        <Stack spacing={2} sx={{ alignItems: 'center' }}>
+          <CircularProgress />
+          <Typography color="text.secondary">Loading endpoint manifest...</Typography>
+        </Stack>
+      </Box>
+    )
   }
 
   if (!manifest || !selectedEndpoint) {
-    return <main className="shell shell--centered">{error || 'No endpoints available.'}</main>
+    return (
+      <Box className="loading-shell">
+        <Alert severity="error">{error || 'No endpoints available.'}</Alert>
+      </Box>
+    )
   }
 
+  const requiredCount = selectedEndpoint.params.filter((param) => param.required).length
+
   return (
-    <main className="shell">
-      <section className="layout-grid">
-        <aside className="sidebar">
-          <div className="panel">
-            <div className="panel__header">
-              <div>
-                <h2>Endpoint catalog</h2>
-                <p>Select an API, review params, then send a proxied request.</p>
-              </div>
-            </div>
-
-            <EndpointSelector
-              endpoints={manifest.endpoints}
-              selectedKey={selectedKey}
-              onSelect={handleSelect}
+    <Container className="app-shell" maxWidth={false}>
+      <Paper className="hero-panel" elevation={0}>
+        <Stack className="hero-content" spacing={3}>
+          <Stack spacing={2}>
+            <Chip
+              className="hero-chip"
+              icon={<SearchIcon />}
+              label="JustSerp Google Suite"
+              color="primary"
             />
+            <Box>
+              <Typography variant="h1">Google endpoint explorer</Typography>
+              <Typography className="hero-subtitle" color="text.secondary">
+                Build requests from the shared manifest, proxy them through Go, and inspect
+                structured responses without exposing API credentials in the browser.
+              </Typography>
+            </Box>
+          </Stack>
 
-            <div className="sidebar__summary">
-              <span className="status-badge">{selectedEndpoint.groupLabel}</span>
-              <code>{selectedEndpoint.path}</code>
-            </div>
-          </div>
+          <Box className="hero-metrics">
+            <MetricCard
+              icon={<DatasetIcon />}
+              label="Available endpoints"
+              value={manifest.endpoints.length}
+            />
+            <MetricCard
+              icon={<ApiIcon />}
+              label="Params in this request"
+              value={selectedEndpoint.params.length}
+            />
+            <MetricCard icon={<KeyIcon />} label="Required fields" value={requiredCount} />
+          </Box>
+        </Stack>
+      </Paper>
+
+      <Box className="workspace-grid">
+        <aside className="sidebar">
+          <Paper className="mui-panel sidebar-panel" elevation={0}>
+            <Stack spacing={2.5}>
+              <Box>
+                <Typography variant="h2">Endpoint catalog</Typography>
+                <Typography color="text.secondary">
+                  Select an API, review params, then send a proxied request.
+                </Typography>
+              </Box>
+
+              <EndpointSelector
+                endpoints={manifest.endpoints}
+                selectedKey={selectedKey}
+                onSelect={handleSelect}
+              />
+
+              <Stack spacing={1.25}>
+                <Stack direction="row" sx={{ flexWrap: 'wrap', gap: 1 }}>
+                  <Chip label={selectedEndpoint.groupLabel} color="primary" variant="outlined" />
+                  <Chip label={selectedEndpoint.method} color="secondary" variant="outlined" />
+                </Stack>
+                <Stack className="endpoint-path" direction="row" spacing={1}>
+                  <CodeIcon fontSize="small" />
+                  <code>{selectedEndpoint.path}</code>
+                </Stack>
+                <Typography color="text.secondary">{selectedEndpoint.description}</Typography>
+              </Stack>
+            </Stack>
+          </Paper>
         </aside>
 
-        <div className="content-stack">
+        <Stack spacing={2.5}>
           <EndpointForm
             endpoint={selectedEndpoint}
             values={formValues}
@@ -153,8 +224,30 @@ export function ExplorerPage() {
             error={error}
             isLoading={isSubmitting}
           />
-        </div>
-      </section>
-    </main>
+        </Stack>
+      </Box>
+    </Container>
+  )
+}
+
+function MetricCard({
+  icon,
+  label,
+  value,
+}: {
+  icon: React.ReactNode
+  label: string
+  value: number
+}) {
+  return (
+    <Paper className="metric-card" elevation={0}>
+      <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
+        <span className="metric-icon">{icon}</span>
+        <Box>
+          <Typography className="metric-value">{value}</Typography>
+          <Typography className="metric-label">{label}</Typography>
+        </Box>
+      </Stack>
+    </Paper>
   )
 }

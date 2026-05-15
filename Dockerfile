@@ -1,3 +1,4 @@
+
 FROM node:22-alpine AS frontend-builder
 WORKDIR /build/frontend
 
